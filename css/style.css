@@ -1,0 +1,27 @@
+.single-image {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    border-color: 3px solid #dddddddd;
+}
+
+.card {
+    background-color: #7db1ff !important;
+}
+
+.notify {
+    position: absolute;
+    height: 30px;
+    width: 150px;
+    background-color: #f12d2d;
+    color: #fff;
+    top: 92%;
+    left: 72%;
+    text-align: center;
+    border-radius: 10px;
+    vertical-align: middle;
+    z-index: 999;
+    padding-top: 2px;
+    transition: 1.5s;
+    transform: translate(y);
+}
