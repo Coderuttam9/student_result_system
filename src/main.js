@@ -1,7 +1,6 @@
 const student_from_data = document.querySelector("#from-student-data");
 const msg = document.querySelector(".msg");
 const msgEdit = document.querySelector(".msgEidt");
-console.log(msgEdit);
 const show_student = document.querySelector(".show-student");
 const DeleteBtn = document.querySelector(".fa-trash")
 const showSingleView = document.querySelector(".showSingleView");
@@ -9,6 +8,9 @@ const div = document.createElement("div");
 const card_body = document.querySelector('.card-body');
 const student_result_data = document.querySelector('.student-data-result');
 const edite_student_formData = document.querySelector('.add-edit-data');
+const data_result_edit_form = document.querySelector('#edit-student_result_data');
+
+
 
 
 
@@ -27,10 +29,10 @@ const showStudent = () => {
                             <td>${student.name}</td>
                             <td>${student.roll}</td>
                             <td>${student.reg}</td>
-                            <td>${student.SeTtime}</td>
+                            <td>${timeAgo(student.SeTtime)}</td>
                                 
                             <td> ${student.Result === null ? `<button onclick ="addResult('${student.id}')" data-bs-toggle="modal" data-bs-target=".student-data-result" class="btn btn-sm btn-success"> Add result</button>`:
-                                `<button class="btn btn-sm btn-warning">  View result</button>`} 
+                                `<button  onclick ="editResultform('${student.id}')"  data-bs-toggle="modal" data-bs-target=".data-result-edit" class="btn btn-sm btn-warning">  View Marks</button>`} 
                             </td>
                             <td>
                                 <button onclick="editUpdateData('${student.id}')" data-bs-toggle="modal" data-bs-target=".add-edit-data" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></button>
@@ -85,7 +87,7 @@ student_from_data.onsubmit = (e) => {
         oldStudentData.push({
             ...data,
             Result: null,
-            SeTtime: timeAgo(Date.now),
+            SeTtime: Date.now(),
             id: getRandomId(22),
         });
 
@@ -122,7 +124,7 @@ student_result_data.onsubmit=(e)=>{
     const  form_data = new FormData(e.target);
     const data = Object.fromEntries(form_data.entries());
 
-    console.log(data);
+
 
     // update data to ls 
     const oldStudentData = getDataLS('student');
@@ -135,6 +137,42 @@ student_result_data.onsubmit=(e)=>{
     e.target.reset();
     
 }
+
+//  set value  to edit form 
+const editResultform =(id)=>{
+    const data = getDataLS("student");
+    const editresult = data.find((item)=>item.id===id);
+  
+    data_result_edit_form.querySelector('input[name="bangla"]').value = editresult.Result.bangla
+    data_result_edit_form.querySelector('input[name= "english"]').value = editresult.Result.english
+    data_result_edit_form.querySelector('input[name="math"]').value = editresult.Result.math
+    data_result_edit_form.querySelector('input[name="social_science"]').value = editresult.Result.social_science
+    data_result_edit_form.querySelector('input[name="science"]').value = editresult.Result.science
+    data_result_edit_form.querySelector('input[name="reigion"]').value = editresult.Result.reigion
+    data_result_edit_form.querySelector('input[name="id"]').value = editresult.Result.id
+
+
+     
+   }
+
+// edit result form 
+data_result_edit_form.onsubmit=(e)=>{
+    e.preventDefault();
+
+   
+    const form_data = new FormData(e.target);
+    const data = Object.fromEntries( form_data.entries());
+ const oldStudentData = getDataLS('student');
+
+ oldStudentData[oldStudentData.findIndex((item)=>item.id=== data.id)]={
+    ...oldStudentData[oldStudentData.findIndex((item)=>item.id=== data.id)],
+    Result:data,
+ }
+    setDataLs('student', data)
+    setDataLs('student', oldStudentData)
+    e.target.reset()
+}
+
 
 // Edit and update data to ls 
 const editUpdateData =(id)=>{
